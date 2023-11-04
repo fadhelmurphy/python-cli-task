@@ -13,5 +13,5 @@ Product Menu {separator}\n
 Halo, Anda sedang berada di halaman Product
 
 [1] : Menampilkan seluruh product
-[2] : Menampilkan product berdasarkan sku
+[2] : Menampilkan product berdasarkan nama produk atau sku
         """)

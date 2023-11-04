@@ -19,9 +19,9 @@ list_product = [
 def GetProducts():
     return list_product
 
-def GetProductById(sku):
+def GetProductById(value):
     try:
-        return list(filter(lambda product: product["sku"].lower() == sku.lower(), list_product))[0]
+        return list(filter(lambda product: (product["sku"].lower() == value.lower() or product["product_name"].lower() == value.lower()), list_product))[0]
     except:
         return []
 

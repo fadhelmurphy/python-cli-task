@@ -17,7 +17,7 @@ def AllProductsController():
             showProductList(products)
 
 def ProductByIdController():
-    sku = input("Masukkan sku : ")
+    sku = input("Masukkan sku atau product name : ")
     products = GetProductById(sku)
     if len(products) > 0: showProductDetail(products)
     else: print("Mohon maaf, data yang ada cari tidak ada.")
