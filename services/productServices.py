@@ -20,7 +20,10 @@ def GetProducts():
     return list_product
 
 def GetProductById(sku):
-    return list(filter(lambda product: product["sku"].lower() == sku.lower(), list_product))[0]
+    try:
+        return list(filter(lambda product: product["sku"].lower() == sku.lower(), list_product))[0]
+    except:
+        return []
 
 def GetSortedProductsByParams(params):
     return sorted(list_product, key=lambda d: d[params]) 

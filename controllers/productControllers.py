@@ -1,12 +1,21 @@
 from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams
+from helpers import showProductList, showProductDetail
 
 def AllProductsController(): 
-    print(GetProducts())
-    isSorted = input("Mau di sort? (y/t) : ")
-    if isSorted.lower() == "y":
-        sortedBy = input("Sorted by:")
-        print(GetSortedProductsByParams(sortedBy))
+    products = GetProducts()
+    showProductList(products)
+    if len(products) > 0:
+        isSorted = input("\nMau di sort? (y/t) : ")
+        if isSorted.lower() == "y":
+            print("\nList kolom : ")
+            list_products_kolom = [item for item in products[0].keys()]
+            for idx, item in enumerate(list_products_kolom): print(f"[{idx}] : {item}")
+            sortedBy = int(input(f"Pilih kolom yang ingin di sort (masukkan angka 0-{len(list_products_kolom)-1}) : "))
+            products = GetSortedProductsByParams(list_products_kolom[sortedBy])
+            showProductList(products)
 
 def ProductByIdController():
-    sku = input("Masukkan sku:")
-    print(GetProductById(sku))
+    sku = input("Masukkan sku : ")
+    products = GetProductById(sku)
+    if len(products) > 0: showProductDetail(products)
+    else: print("Mohon maaf, data yang ada cari tidak ada.")
