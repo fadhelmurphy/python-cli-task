@@ -20,10 +20,22 @@ def GetProducts():
     return list_product
 
 def GetProductById(value):
+    value = value.lower()
     try:
-        return list(filter(lambda product: (product["sku"].lower() == value.lower() or product["product_name"].lower() == value.lower()), list_product))[0]
+        return list(filter(lambda product: (value in product["sku"].lower() or value in product["product_name"].lower()), list_product))
     except:
         return []
 
 def GetSortedProductsByParams(params, reverse=False):
-    return sorted(list_product, key=lambda d: d[params], reverse=reverse) 
+    global list_product
+    list_product = sorted(list_product, key=lambda d: d[params], reverse=reverse) 
+    return list_product
+
+def DeleteProductByIdx(index):
+    try:
+        del list_product[index]
+    except:
+        print("\nMaaf index yang kamu masukkan tidak ada dalam table\n")
+
+def PutProductByIdx(index, payload):
+    list_product[index] = payload

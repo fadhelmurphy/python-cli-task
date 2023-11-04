@@ -1,5 +1,5 @@
-from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams
-from helpers import showProductList, showProductDetail
+from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx
+from helpers import showProductList
 
 def AllProductsController(): 
     products = GetProducts()
@@ -19,5 +19,34 @@ def AllProductsController():
 def ProductByIdController():
     sku = input("Masukkan sku atau product name : ")
     products = GetProductById(sku)
-    if len(products) > 0: showProductDetail(products)
+    if len(products) > 0: showProductList(products)
     else: print("Mohon maaf, data yang ada cari tidak ada.")
+
+def DeleteProductByIdController():
+    products = GetProducts()
+    showProductList(products, withIndex=True)
+    index = int(input(f"\n\nMasukkan index yang ingin dihapus (0-{len(products)-1}) : "))
+    DeleteProductByIdx(index)
+    products = GetProducts()
+    showProductList(products, withIndex=True)
+
+def UpdateProductById():
+    val = ""
+    products = GetProducts()
+    showProductList(products, withIndex=True)
+    index = int(input(f"\n\nMasukkan index yang ingin diubah (0-{len(products)-1}) : "))
+    print("\n\nTekan enter jika data tidak ingin diubah")
+    for key in products[index].keys():
+        if isinstance(products[index][key], str):
+            val = input(f"Masukkan {key} : ")
+            if val != "" : products[index][key] = val
+        elif isinstance(products[index][key], int):
+            val = input(f"Masukkan {key} : ")
+            if val != "" : products[index][key] = int(val)
+        elif isinstance(products[index][key], list):
+            val = input(f"Masukkan {key} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
+            if val != "" : products[index][key] = val.split(",")
+
+    PutProductByIdx(index, products[index])
+    products = GetProducts()
+    showProductList(products, withIndex=True)
