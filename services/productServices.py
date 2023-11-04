@@ -25,5 +25,5 @@ def GetProductById(sku):
     except:
         return []
 
-def GetSortedProductsByParams(params):
-    return sorted(list_product, key=lambda d: d[params]) 
+def GetSortedProductsByParams(params, reverse=False):
+    return sorted(list_product, key=lambda d: d[params], reverse=reverse) 
