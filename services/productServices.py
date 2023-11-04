@@ -1,21 +1,6 @@
-list_product = [
-    {
-        "sku": "FDS-1101",
-        "product_name": "MINES Parfume",
-        "brand_name": "MINES",
-        "category": ["fragrance"],
-        "price": 250000,
-        "stock": 24
-    },
-    {
-        "sku": "FDS-1102",
-        "product_name": "AAA Parfume",
-        "brand_name": "MINES",
-        "category": ["fragrance"],
-        "price": 250000,
-        "stock": 24
-    }
-]
+from models.product import list_product, schema_product
+from helpers import rupiah_format
+
 def GetProducts():
     return list_product
 
@@ -39,3 +24,37 @@ def DeleteProductByIdx(index):
 
 def PutProductByIdx(index, payload):
     list_product[index] = payload
+
+def PostProduct(payload):
+    isProductExist = len(GetProductById(payload["sku"])) > 0
+    if isProductExist == False:
+        list_product.append(payload)
+        return True
+    else: return False
+
+def create_product():
+    product = {}
+    for item, data_type in schema_product.items():
+        if "list" in str(data_type):
+            val = input(f"Masukkan {item} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
+            if val != "" : product[item] = data_type(val.split(","))
+        else:
+            val = data_type(input(f"Masukkan {item} : "))
+            if val != "" : product[item] = val
+    return product
+
+def showlist_product(products, withIndex = False):
+    index = f"Index\t\t| " if withIndex else ""
+    print("\n")
+    print(f"{index}sku\t\t| product name\t\t\t| brand name\t\t| category\t\t\t| price\t\t| stock ".title())
+    for idx, item in enumerate(products):
+        index = f"{idx}\t\t| " if withIndex else ""
+        sku, product_name, brand_name, category, price, stock = item.values()
+        productTab = "\t"*2 if len(product_name) >= 14 else "\t"*3
+        brandTab = "\t"*2 if len(brand_name) >= 6 else "\t"*3
+        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}\t\t\t| {rupiah_format(price)}\t| {stock} ".title())
+
+def showProductDetail(item):
+    print(f"sku\t\t| product name\t\t\t| brand name\t| category\t\t\t| price\t\t| stock ")
+    sku, product_name, brand_name, category, price, stock = item.values()
+    print(f"{sku}\t| {product_name}\t\t\t| {brand_name}\t\t| {' '.join(category)}\t\t\t| {price}\t| {stock} ")

@@ -1,9 +1,9 @@
-from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx
-from helpers import showProductList
+from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
+from services.productServices import showlist_product, create_product
 
 def AllProductsController(): 
     products = GetProducts()
-    showProductList(products)
+    showlist_product(products)
     if len(products) > 0:
         isSorted = input("\nMau di sort? (y/t) : ").lower()
         if isSorted == "y":
@@ -14,30 +14,31 @@ def AllProductsController():
             isDescending = input("\nAscending / Descending? (a/d) : ").lower()
             isDescending = isDescending == "d"
             products = GetSortedProductsByParams(list_products_kolom[sortedBy], isDescending)
-            showProductList(products)
+            showlist_product(products)
 
 def ProductByIdController():
     sku = input("Masukkan sku atau product name : ")
     products = GetProductById(sku)
-    if len(products) > 0: showProductList(products)
+    if len(products) > 0: showlist_product(products)
     else: print("Mohon maaf, data yang ada cari tidak ada.")
 
 def DeleteProductByIdController():
     products = GetProducts()
-    showProductList(products, withIndex=True)
+    showlist_product(products, withIndex=True)
     index = int(input(f"\n\nMasukkan index yang ingin dihapus (0-{len(products)-1}) : "))
     DeleteProductByIdx(index)
     products = GetProducts()
-    showProductList(products, withIndex=True)
+    showlist_product(products)
 
-def UpdateProductById():
+def UpdateProductByIdController():
     val = ""
     products = GetProducts()
-    showProductList(products, withIndex=True)
+    showlist_product(products, withIndex=True)
     index = int(input(f"\n\nMasukkan index yang ingin diubah (0-{len(products)-1}) : "))
     print("\n\nTekan enter jika data tidak ingin diubah")
     for key in products[index].keys():
-        if isinstance(products[index][key], str):
+        if key == "sku": continue
+        elif isinstance(products[index][key], str):
             val = input(f"Masukkan {key} : ")
             if val != "" : products[index][key] = val
         elif isinstance(products[index][key], int):
@@ -49,4 +50,14 @@ def UpdateProductById():
 
     PutProductByIdx(index, products[index])
     products = GetProducts()
-    showProductList(products, withIndex=True)
+    showlist_product(products, withIndex=True)
+
+def AddProductController():
+    product = create_product();
+    isSuccessAdd = PostProduct(product)
+    if isSuccessAdd:
+        products = GetProducts()
+        showlist_product(products)
+    else: 
+        print("Product yang di input sudah ada, silakan input sku atau nama product yang lain\n")
+        AddProductController()
