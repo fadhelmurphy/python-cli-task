@@ -1,6 +1,6 @@
 import app
 
-separator = "="*41
+separator = "="*42
 
 
 def toRupiah(angka=0):

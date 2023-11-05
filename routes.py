@@ -10,7 +10,7 @@ menu = {
         "1_1_3": DeleteProductByIdController,
         "1_1_4": PutProductByIdController,
         "1_1_5": PostProductController,
-        "1_1_6": PostBuyProductController,
-        "1_1_7": GetCartsController,
-        "1_6": AboutInformationController,
+        "1_2": PostBuyProductController,
+        "1_3": GetCartsController,
+        "1_99": AboutInformationController,
 }

@@ -37,9 +37,9 @@ def PutProductByIdController():
         sku = input(f"\n\nMasukkan sku yang ingin diubah : ")
         selectedProduct = GetIndexByProductId(sku).copy()
         isNotFound = len(selectedProduct) == 0
-        if isNotFound == False:
+        if isNotFound: print("Sku tidak ditemukan, silakan coba yang lain")
+        else:
             index = selectedProduct[0][0]
-        else: print("Sku tidak ditemukan, silakan coba yang lain")
     print("\n\nTekan enter jika data tidak ingin diubah")
     for key in products[index].keys():
         if key == "sku": continue
@@ -65,7 +65,7 @@ def PostBuyProductController():
     printAllProduct()
     isNotFound = True
     while isNotFound:
-        sku = input(f"Masukkan sku yang ingin diubah : ")
+        sku = input(f"Masukkan sku yang ingin dibeli : ")
         products = GetProductById(sku)
         isNotFound = len(products) == 0
         if isNotFound: print("Mohon maaf, data yang ada cari tidak ada.")

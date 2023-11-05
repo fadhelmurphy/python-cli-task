@@ -1,11 +1,12 @@
 from helpers import separator
-import app
 
 def MainInformationController():
     print(f"""
 Main Menu {separator}\n
 [1] : Menuju Halaman Product
-[6] : Menuju Halaman About
+[2] : Membeli Product
+[3] : Menampilkan Keranjang
+[99] : Menuju Halaman About
         """)
 
 def ProductInformationController():
@@ -18,9 +19,6 @@ Halo, Anda sedang berada di halaman Product
 [3] : Menghapus satu product
 [4] : Mengupdate satu product
 [5] : Menambah satu product
-
-[6] : Membeli product
-[7] : Menampilkan keranjang
         """)
     
 def AboutInformationController():
@@ -29,4 +27,3 @@ def AboutInformationController():
 
 This application build from scratch by Fadhel Ijlal Falah (Iron Man)
         """)
-    app.backToMainMenu()
