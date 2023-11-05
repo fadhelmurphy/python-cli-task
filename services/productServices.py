@@ -33,6 +33,9 @@ def PostProduct(payload):
         list_product.append(payload)
         return True
     else: return False
+
+def printAllProduct(withIndex=False):
+    print(showlist_product(GetProducts(), withIndex))
         
 
 def create_product():

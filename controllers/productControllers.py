@@ -1,9 +1,9 @@
 from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
-from services.productServices import showlist_product, create_product
+from services.productServices import showlist_product, create_product, printAllProduct
+from services.cartServices import GetCarts
 
-def AllProductsController(): 
-    products = GetProducts()
-    showlist_product(products)
+def GetProductsController(): 
+    printAllProduct()
     if len(products) > 0:
         isSorted = input("\nMau di sort? (y/t) : ").lower()
         if isSorted == "y":
@@ -16,7 +16,7 @@ def AllProductsController():
             products = GetSortedProductsByParams(list_products_kolom[sortedBy], isDescending)
             showlist_product(products)
 
-def ProductByIdController():
+def SearchProductByIdController():
     sku = input("Masukkan sku atau product name : ")
     products = GetProductById(sku)
     if len(products) > 0: showlist_product(products)
@@ -27,10 +27,9 @@ def DeleteProductByIdController():
     showlist_product(products, withIndex=True)
     index = int(input(f"\n\nMasukkan index yang ingin dihapus (0-{len(products)-1}) : "))
     DeleteProductByIdx(index)
-    products = GetProducts()
-    showlist_product(products)
+    printAllProduct()
 
-def UpdateProductByIdController():
+def PutProductByIdController():
     val = ""
     products = GetProducts()
     showlist_product(products, withIndex=True)
@@ -49,15 +48,18 @@ def UpdateProductByIdController():
             if val != "" : products[index][key] = val.split(",")
 
     PutProductByIdx(index, products[index])
-    products = GetProducts()
-    showlist_product(products)
+    printAllProduct()
 
-def AddProductController():
+def PostProductController():
     product = create_product();
     isSuccessAdd = PostProduct(product)
     if isSuccessAdd:
-        products = GetProducts()
-        showlist_product(products)
+        printAllProduct()
     else: 
         print("Product yang di input sudah ada, silakan input sku atau nama product yang lain\n")
-        AddProductController()
+        PostProductController()
+
+def PostBuyProductController():
+    printAllProduct(withIndex=True)
+    current_cart = GetCarts()
+    print(current_cart)
