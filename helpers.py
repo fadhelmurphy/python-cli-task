@@ -3,17 +3,10 @@ import app
 separator = "="*41
 
 
-def toRupiah(angka):
-    try:
-        # Format the integer part with thousands separators
-        integer_part = '{:,.0f}'.format(angka)
-
-        # Combine the integer
-        formatted_amount = 'Rp ' + integer_part
-
-        return formatted_amount
-    except (ValueError, TypeError):
-        return "Invalid Input"
+def toRupiah(angka=0):
+    integer_part = '{:,.0f}'.format(angka)
+    formatted_amount = 'Rp ' + integer_part
+    return formatted_amount
     
 def requiredInput(placeholder, data_type = str):
     isRequired = True
