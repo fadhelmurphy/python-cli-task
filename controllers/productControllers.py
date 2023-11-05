@@ -1,5 +1,5 @@
 from services.productServices import GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
-from services.productServices import showlist_product, create_product, printAllProduct, changeProductQty
+from services.productServices import showlist_product, create_product, printAllProduct, changeProductQty, GetIndexByProductId
 from services.cartServices import GetCarts, PostCart
 
 def GetProductsController(): 
@@ -30,8 +30,16 @@ def DeleteProductByIdController():
 
 def PutProductByIdController():
     val = ""
-    products = printAllProduct(withIndex=True)
-    index = int(input(f"\n\nMasukkan index yang ingin diubah (0-{len(products)-1}) : "))
+    products = printAllProduct()
+    isNotFound = True
+    index = 0
+    while isNotFound:
+        sku = input(f"\n\nMasukkan sku yang ingin diubah : ")
+        selectedProduct = GetIndexByProductId(sku).copy()
+        isNotFound = len(selectedProduct) == 0
+        if isNotFound == False:
+            index = selectedProduct[0][0]
+        else: print("Sku tidak ditemukan, silakan coba yang lain")
     print("\n\nTekan enter jika data tidak ingin diubah")
     for key in products[index].keys():
         if key == "sku": continue

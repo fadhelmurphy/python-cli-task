@@ -10,6 +10,13 @@ def GetProductById(value):
         return findItemInListObj(lambda product: (value in product["sku"].lower() or value in product["product_name"].lower()), list_product)
     except:
         return []
+    
+def GetIndexByProductId(value):
+    value = value.lower()
+    try:
+        return findItemInListObj(lambda product: (value in product[1]["sku"].lower() or value in product[1]["product_name"].lower()), enumerate(list_product))
+    except:
+        return []
 
 def GetSortedProductsByParams(params, reverse=False):
     global list_product
