@@ -1,5 +1,5 @@
 from models.product import list_product, schema_product
-from helpers import rupiah_format, requiredInput, findItemInListObj
+from helpers import toRupiah, requiredInput, findItemInListObj
 
 def GetProducts():
     return list_product
@@ -55,7 +55,7 @@ def showlist_product(products, withIndex = False):
         sku, product_name, brand_name, category, price, stock = item.values()
         productTab = "\t"*2 if len(product_name) >= 14 else "\t"*3
         brandTab = "\t"*2 if len(brand_name) >= 6 else "\t"*3
-        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}\t\t\t| {rupiah_format(price)}\t| {stock} ".title())
+        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}\t\t\t| {toRupiah(price)}\t| {stock} ".title())
 
 def showProductDetail(item):
     print(f"sku\t\t| product name\t\t\t| brand name\t| category\t\t\t| price\t\t| stock ")

@@ -3,7 +3,7 @@ import app
 separator = "="*41
 
 
-def rupiah_format(angka):
+def toRupiah(angka):
     try:
         # Format the integer part with thousands separators
         integer_part = '{:,.0f}'.format(angka)
@@ -31,5 +31,5 @@ def requiredInput(placeholder, data_type = str):
 def findItemInListObj(funcCondition, obj): return list(filter(funcCondition, obj))
 
 def bottomInfo(): 
-    displayBack = "[9] : tekan 9 dan enter untuk kembali.\n" if len(app.currentRoutes) > 1 else ""
+    displayBack = "[9] : tekan 9 dan enter untuk kembali ke menu.\n" if len(app.currentRoutes) > 1 else ""
     print(f"\n\n{displayBack}[0] : tekan 0 dan enter untuk keluar dari program\n")

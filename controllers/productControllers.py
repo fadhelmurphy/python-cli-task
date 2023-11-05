@@ -50,7 +50,7 @@ def UpdateProductByIdController():
 
     PutProductByIdx(index, products[index])
     products = GetProducts()
-    showlist_product(products, withIndex=True)
+    showlist_product(products)
 
 def AddProductController():
     product = create_product();
