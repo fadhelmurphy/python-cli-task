@@ -20,26 +20,20 @@ def SearchProductByIdController():
     sku = input("Masukkan sku atau product name : ")
     products = GetProductById(sku)
     if len(products) > 0: showlist_product(products)
-    else: print("Mohon maaf, data yang ada cari tidak ada.")
+    else: 
+        print("Mohon maaf, data yang ada cari tidak ada, silakan cari yang lain.\n")
+        SearchProductByIdController()
 
 def DeleteProductByIdController():
-    products = printAllProduct(withIndex=True)
-    index = int(input(f"\n\nMasukkan index yang ingin dihapus (0-{len(products)-1}) : "))
+    printAllProduct()
+    index = GetIndexByProductId()
     DeleteProductByIdx(index)
     printAllProduct()
 
 def PutProductByIdController():
     val = ""
     products = printAllProduct()
-    isNotFound = True
-    index = 0
-    while isNotFound:
-        sku = input(f"\n\nMasukkan sku yang ingin diubah : ")
-        selectedProduct = GetIndexByProductId(sku).copy()
-        isNotFound = len(selectedProduct) == 0
-        if isNotFound: print("Sku tidak ditemukan, silakan coba yang lain")
-        else:
-            index = selectedProduct[0][0]
+    index = GetIndexByProductId()
     print("\n\nTekan enter jika data tidak ingin diubah")
     for key in products[index].keys():
         if key == "sku": continue

@@ -11,10 +11,18 @@ def GetProductById(value):
     except:
         return []
     
-def GetIndexByProductId(value):
-    value = value.lower()
+def GetIndexByProductId():
+    isNotFound = True
+    index = 0
     try:
-        return findItemInListObj(lambda product: (value in product[1]["sku"].lower() or value in product[1]["product_name"].lower()), enumerate(list_product))
+        while isNotFound:
+            value = input(f"\n\nMasukkan sku yang ingin diubah : ").lower()
+            selectedProduct = findItemInListObj(lambda product: (value in product[1]["sku"].lower()), enumerate(list_product))
+            isNotFound = len(selectedProduct) == 0
+            if isNotFound: print("Sku tidak ditemukan, silakan coba yang lain")
+            else:
+                index = selectedProduct[0][0]
+        return index
     except:
         return []
 
