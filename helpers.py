@@ -24,6 +24,13 @@ def requiredInput(placeholder, data_type = str):
 
 def findItemInListObj(funcCondition, obj): return list(filter(funcCondition, obj))
 
+def changeItemInListObj(funcCondition, obj): return list(map(funcCondition, obj))
+
+def changeItemByCond(item, key, value, condition):
+    if condition : 
+        item[key] -= value
+    return item
+
 def bottomInfo(): 
     displayBack = "[9] : tekan 9 dan enter untuk kembali ke menu.\n" if len(app.currentRoutes) > 1 else ""
     print(f"\n\n{displayBack}[0] : tekan 0 dan enter untuk keluar dari program\n")

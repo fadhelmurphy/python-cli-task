@@ -1,6 +1,6 @@
-from services.productServices import GetProducts, GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
-from services.productServices import showlist_product, create_product, printAllProduct
-from services.cartServices import GetCarts
+from services.productServices import GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
+from services.productServices import showlist_product, create_product, printAllProduct, changeProductQty
+from services.cartServices import GetCarts, PostCart
 
 def GetProductsController(): 
     products = printAllProduct()
@@ -55,5 +55,18 @@ def PostProductController():
 
 def PostBuyProductController():
     printAllProduct()
+    isNotFound = True
+    while isNotFound:
+        sku = input(f"Masukkan sku yang ingin diubah : ")
+        products = GetProductById(sku)
+        isNotFound = len(products) == 0
+        if isNotFound: print("Mohon maaf, data yang ada cari tidak ada.")
+
+    stock = int(input(f"Masukkan jumlah stock yang ingin dibeli : "))
+    # current_product = changeProductQty(key="stock", val=stock, condKey="sku", condVal=sku).copy()
+    # showlist_product(current_product)
+    products = GetProductById(sku).copy()[0].copy()
+    products["stock"] = stock
+    PostCart(products)
     current_cart = GetCarts()
-    print(current_cart)
+    showlist_product(current_cart)

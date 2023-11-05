@@ -1,5 +1,5 @@
 from models.product import list_product, schema_product
-from helpers import toRupiah, requiredInput, findItemInListObj
+from helpers import toRupiah, requiredInput, findItemInListObj, changeItemInListObj, changeItemByCond
 
 def GetProducts():
     return list_product
@@ -34,7 +34,9 @@ def printAllProduct(withIndex=False):
     products = GetProducts()
     showlist_product(products, withIndex)
     return products
-        
+
+def changeProductQty(key, val, condKey, condVal):
+    return changeItemInListObj(lambda item: changeItemByCond(item, key, val, item[condKey].lower() == condVal.lower()), list_product)
 
 def create_product():
     product = {}
