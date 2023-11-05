@@ -1,5 +1,5 @@
 from models.product import list_product, schema_product
-from helpers import rupiah_format
+from helpers import rupiah_format, requiredInput, findItemInListObj
 
 def GetProducts():
     return list_product
@@ -7,7 +7,7 @@ def GetProducts():
 def GetProductById(value):
     value = value.lower()
     try:
-        return list(filter(lambda product: (value in product["sku"].lower() or value in product["product_name"].lower()), list_product))
+        return findItemInListObj(lambda product: (value in product["sku"].lower() or value in product["product_name"].lower()), list_product)
     except:
         return []
 
@@ -25,22 +25,25 @@ def DeleteProductByIdx(index):
 def PutProductByIdx(index, payload):
     list_product[index] = payload
 
+isProductExist = lambda sku: len(GetProductById(sku)) > 0
+
 def PostProduct(payload):
-    isProductExist = len(GetProductById(payload["sku"])) > 0
-    if isProductExist == False:
+    isExist = isProductExist(payload["sku"])
+    if isExist == False:
         list_product.append(payload)
         return True
     else: return False
+        
 
 def create_product():
     product = {}
     for item, data_type in schema_product.items():
         if "list" in str(data_type):
             val = input(f"Masukkan {item} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
-            if val != "" : product[item] = data_type(val.split(","))
+            product[item] = data_type(val.split(","))
         else:
-            val = data_type(input(f"Masukkan {item} : "))
-            if val != "" : product[item] = val
+            val = requiredInput(f"Masukkan {item} : ", data_type)
+            product[item] = val
     return product
 
 def showlist_product(products, withIndex = False):
