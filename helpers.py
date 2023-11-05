@@ -19,6 +19,7 @@ def requiredInput(placeholder, data_type = str):
                 val = data_type(val.split(","))
             else:
                 val = data_type(val)
+        else: print("Data yang di input masih kosong, silakan coba lagi.")
     return val
 
 def findItemInListObj(funcCondition, obj): return list(filter(funcCondition, obj))

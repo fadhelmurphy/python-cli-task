@@ -3,7 +3,7 @@ from services.productServices import showlist_product, create_product, printAllP
 from services.cartServices import GetCarts
 
 def GetProductsController(): 
-    printAllProduct()
+    products = printAllProduct()
     if len(products) > 0:
         isSorted = input("\nMau di sort? (y/t) : ").lower()
         if isSorted == "y":
@@ -23,16 +23,14 @@ def SearchProductByIdController():
     else: print("Mohon maaf, data yang ada cari tidak ada.")
 
 def DeleteProductByIdController():
-    products = GetProducts()
-    showlist_product(products, withIndex=True)
+    products = printAllProduct(withIndex=True)
     index = int(input(f"\n\nMasukkan index yang ingin dihapus (0-{len(products)-1}) : "))
     DeleteProductByIdx(index)
     printAllProduct()
 
 def PutProductByIdController():
     val = ""
-    products = GetProducts()
-    showlist_product(products, withIndex=True)
+    products = printAllProduct(withIndex=True)
     index = int(input(f"\n\nMasukkan index yang ingin diubah (0-{len(products)-1}) : "))
     print("\n\nTekan enter jika data tidak ingin diubah")
     for key in products[index].keys():
@@ -51,15 +49,11 @@ def PutProductByIdController():
     printAllProduct()
 
 def PostProductController():
-    product = create_product();
-    isSuccessAdd = PostProduct(product)
-    if isSuccessAdd:
-        printAllProduct()
-    else: 
-        print("Product yang di input sudah ada, silakan input sku atau nama product yang lain\n")
-        PostProductController()
+    product = create_product()
+    PostProduct(product)
+    printAllProduct()
 
 def PostBuyProductController():
-    printAllProduct(withIndex=True)
+    printAllProduct()
     current_cart = GetCarts()
     print(current_cart)

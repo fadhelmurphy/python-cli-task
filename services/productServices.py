@@ -28,24 +28,34 @@ def PutProductByIdx(index, payload):
 isProductExist = lambda sku: len(GetProductById(sku)) > 0
 
 def PostProduct(payload):
-    isExist = isProductExist(payload["sku"])
-    if isExist == False:
-        list_product.append(payload)
-        return True
-    else: return False
+    list_product.append(payload)
 
 def printAllProduct(withIndex=False):
-    print(showlist_product(GetProducts(), withIndex))
+    products = GetProducts()
+    showlist_product(products, withIndex)
+    return products
         
 
 def create_product():
     product = {}
-    for item, data_type in schema_product.items():
+    for item, options in schema_product.items():
+        data_type, unique, nullable = options.values()
         if "list" in str(data_type):
-            val = input(f"Masukkan {item} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
+            val = input(f"Masukkan {item} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, sunscreen : ")
             product[item] = data_type(val.split(","))
-        else:
+        elif unique and nullable != True:
+            isValid = True
+            while isValid:
+                val = requiredInput(f"Masukkan {item} : ", data_type)
+                isValid = isProductExist(val)
+                if isValid == True:
+                    print("Data yang anda input sudah ada, silakan input yang lain.")
+            product[item] = val
+        elif nullable != True:
             val = requiredInput(f"Masukkan {item} : ", data_type)
+            product[item] = val
+        elif nullable:
+            val = data_type(input(f"Masukkan {item} : "))
             product[item] = val
     return product
 
@@ -58,7 +68,8 @@ def showlist_product(products, withIndex = False):
         sku, product_name, brand_name, category, price, stock = item.values()
         productTab = "\t"*2 if len(product_name) >= 14 else "\t"*3
         brandTab = "\t"*2 if len(brand_name) >= 6 else "\t"*3
-        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}\t\t\t| {toRupiah(price)}\t| {stock} ".title())
+        categoryTab = "\t"*2 if len(category) >= 6 else "\t"*3
+        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())
 
 def showProductDetail(item):
     print(f"sku\t\t| product name\t\t\t| brand name\t| category\t\t\t| price\t\t| stock ")

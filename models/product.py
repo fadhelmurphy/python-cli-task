@@ -18,10 +18,34 @@ list_product = [
 ]
 
 schema_product =     {
-    "sku": str,
-    "product_name": str,
-    "brand_name": str,
-    "category": list,
-    "price": int,
-    "stock": int
+    "sku": {
+        "type": str,
+        "unique": True,
+        "nullable": False
+    },
+    "product_name": {
+        "type": str,
+        "unique": False,
+        "nullable": True
+    },
+    "brand_name": {
+        "type": str,
+        "unique": False,
+        "nullable": True
+    },
+    "category": {
+        "type": list,
+        "unique": False,
+        "nullable": True
+    },
+    "price": {
+        "type": int,
+        "unique": False,
+        "nullable": True
+    },
+    "stock": {
+        "type": int,
+        "unique": False,
+        "nullable": True
+    }
 }
