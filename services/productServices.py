@@ -54,7 +54,7 @@ def printAllProduct(withIndex=False):
 #     return changeItemInListObj(lambda item: changeItemByCond(item, key, val, item[condKey].lower() == condVal.lower()), list_product)
 
 def changeProductQty(val, condVal):
-    return changeItemInListObj(lambda item: changeItemByCond(item, "stock", val, item["sku"].lower() == condVal.lower()), list_product)
+    return changeItemInListObj(lambda item: changeItemByCond(item, "stock", val, item["sku"].lower() == condVal.lower() and item["stock"] >= val), list_product)
 
 def create_product():
     product = {}

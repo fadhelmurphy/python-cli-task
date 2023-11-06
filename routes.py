@@ -1,6 +1,6 @@
 from controllers.productControllers import GetProductsController, SearchProductByIdController, DeleteProductByIdController, PutProductByIdController, PostProductController, PostBuyProductController
 from controllers.informationController import MainInformationController, ProductInformationController, AboutInformationController
-from controllers.cartControllers import GetCartsController, PostCartsCheckout
+from controllers.cartControllers import GetCartsController, PostCartsCheckoutController
 
 menu = {
         "1": MainInformationController,
@@ -12,6 +12,6 @@ menu = {
         "1_1_5": PostProductController,
         "1_2": PostBuyProductController,
         "1_3": GetCartsController,
-        "1_4": PostCartsCheckout,
+        "1_4": PostCartsCheckoutController,
         "1_99": AboutInformationController,
 }

@@ -1,6 +1,6 @@
 from services.productServices import GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
 from services.productServices import showlist_product, create_product, printAllProduct, GetIndexByProductId
-from services.cartServices import PostCart, isCartExist, GetCartById, GetIndexByCartId, PutCartByIdx, printAllCarts
+from services.cartServices import PostCart, isCartExist, GetCartById, GetIndexByCartId, PutCartByIdx, printAllCarts, isCartExist
 
 def GetProductsController(): 
     products = printAllProduct()
@@ -65,22 +65,28 @@ def PostBuyProductController():
         isNotFound = len(products) == 0
         if isNotFound: print("Mohon maaf, data yang ada cari tidak ada.")
 
-    stock = int(input(f"Masukkan jumlah stock yang ingin dibeli : "))
+    isntAddToCart = True
     product = GetProductById(sku).copy()[0].copy()
-    if isCartExist(product["sku"]):
+    cart = {}
+    if isCartExist(sku):
         cart = GetCartById(product["sku"]).copy()[0].copy()
+    else:
+        cart = {"stock": 0}
+    while isntAddToCart:
+        stock = int(input(f"Masukkan jumlah stock yang ingin dibeli : "))
+        isntAddToCart = (cart["stock"] + stock) > product["stock"]
+        if isntAddToCart: print("Mohon maaf, jumlah stok yang di input melebihi jumlah stock yang ada di toko.")
+
+    if isCartExist(product["sku"]):
         cart["stock"] += stock
         cart["price"] = cart["stock"] * product["price"]
         cartIndex = GetIndexByCartId(cart["sku"])
-        # current_product = changeProductQty(val=cart["stock"], condVal=cart["sku"]).copy()
         PutCartByIdx(cartIndex, cart)
     else:
         product["stock"] = stock
         product["price"] = stock * product["price"]
-        # current_product = changeProductQty(val=stock, condVal=product["sku"]).copy()
         PostCart(product)
-    # showlist_product(current_product)
-    print("Keranjang anda sekarang :")
+    print("\nKeranjang anda sekarang :")
     printAllCarts()
     isBeli = input(f"Ingin beli lagi? (y / t) : ").lower()
     if isBeli == "y":
