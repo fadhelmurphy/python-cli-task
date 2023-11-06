@@ -1,6 +1,6 @@
 from services.productServices import GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
-from services.productServices import showlist_product, create_product, printAllProduct, changeProductQty, GetIndexByProductId
-from services.cartServices import GetCarts, PostCart
+from services.productServices import showlist_product, create_product, printAllProduct, GetIndexByProductId
+from services.cartServices import PostCart, isCartExist, GetCartById, GetIndexByCartId, PutCartByIdx, printAllCarts
 
 def GetProductsController(): 
     products = printAllProduct()
@@ -65,10 +65,22 @@ def PostBuyProductController():
         if isNotFound: print("Mohon maaf, data yang ada cari tidak ada.")
 
     stock = int(input(f"Masukkan jumlah stock yang ingin dibeli : "))
-    # current_product = changeProductQty(key="stock", val=stock, condKey="sku", condVal=sku).copy()
+    product = GetProductById(sku).copy()[0].copy()
+    if isCartExist(product["sku"]):
+        cart = GetCartById(product["sku"]).copy()[0].copy()
+        cart["stock"] += stock
+        cart["price"] = cart["stock"] * product["price"]
+        cartIndex = GetIndexByCartId(cart["sku"])
+        # current_product = changeProductQty(val=cart["stock"], condVal=cart["sku"]).copy()
+        PutCartByIdx(cartIndex, cart)
+    else:
+        product["stock"] = stock
+        product["price"] = stock * product["price"]
+        # current_product = changeProductQty(val=stock, condVal=product["sku"]).copy()
+        PostCart(product)
     # showlist_product(current_product)
-    products = GetProductById(sku).copy()[0].copy()
-    products["stock"] = stock
-    PostCart(products)
-    current_cart = GetCarts()
-    showlist_product(current_cart)
+    print("Keranjang anda sekarang :")
+    printAllCarts()
+    isBeli = input(f"Ingin beli lagi? (y / t) : ").lower()
+    if isBeli == "y":
+        PostBuyProductController()

@@ -50,8 +50,11 @@ def printAllProduct(withIndex=False):
     showlist_product(products, withIndex)
     return products
 
-def changeProductQty(key, val, condKey, condVal):
-    return changeItemInListObj(lambda item: changeItemByCond(item, key, val, item[condKey].lower() == condVal.lower()), list_product)
+# def changeProductQty(key, val, condKey, condVal):
+#     return changeItemInListObj(lambda item: changeItemByCond(item, key, val, item[condKey].lower() == condVal.lower()), list_product)
+
+def changeProductQty(val, condVal):
+    return changeItemInListObj(lambda item: changeItemByCond(item, "stock", val, item["sku"].lower() == condVal.lower()), list_product)
 
 def create_product():
     product = {}

@@ -6,6 +6,7 @@ Main Menu {separator}\n
 [1] : Menuju Halaman Product
 [2] : Membeli Product
 [3] : Menampilkan Keranjang
+[4] : Halaman Checkout
 [99] : Menuju Halaman About
         """)
 
