@@ -1,6 +1,7 @@
 from services.productServices import GetProductById, GetSortedProductsByParams, DeleteProductByIdx, PutProductByIdx, PostProduct
-from services.productServices import showlist_product, create_product, printAllProduct, GetIndexByProductId
+from services.productServices import showlist_product, create_product, printAllProduct, GetIndexByProductId, showProductDetail
 from services.cartServices import PostCart, isCartExist, GetCartById, GetIndexByCartId, PutCartByIdx, printAllCarts, isCartExist
+import app
 
 def GetProductsController(): 
     products = printAllProduct()
@@ -14,47 +15,65 @@ def GetProductsController():
             isDescending = input("\nAscending / Descending? (a/d) : ").lower()
             isDescending = isDescending == "d"
             products = GetSortedProductsByParams(list_products_kolom[sortedBy], isDescending)
+            print("\nHasil sort product :\n\n")
             showlist_product(products)
+    else: print("Data doesn't exist")
+    app.backToPrevMenu()
 
 def SearchProductByIdController():
     printAllProduct()
-    sku = input("Masukkan sku atau product name : ")
+    sku = input("\nMasukkan sku : ")
     products = GetProductById(sku)
+    print("\nHasil mencari product :")
     if len(products) > 0: showlist_product(products)
     else: 
-        print("Mohon maaf, data yang ada cari tidak ada, silakan cari yang lain.\n")
-        SearchProductByIdController()
+        print("Data doesn't exist, try another sku.\n")
+    app.backToPrevMenu()
 
 def DeleteProductByIdController():
     printAllProduct()
     index = GetIndexByProductId()
     DeleteProductByIdx(index)
+    print("\nData successfully deleted\n")
     printAllProduct()
+    app.backToPrevMenu()
 
 def PutProductByIdController():
     val = ""
     products = printAllProduct()
     index = GetIndexByProductId()
-    print("\n\nTekan enter jika data tidak ingin diubah")
+    showProductDetail(products[index])
+
+    print("Nama - nama kolom yang ada : \n")
     for key in products[index].keys():
         if key == "sku": continue
-        elif isinstance(products[index][key], str):
-            val = input(f"Masukkan {key} : ")
-            if val != "" : products[index][key] = val
-        elif isinstance(products[index][key], int):
-            val = input(f"Masukkan {key} : ")
-            if val != "" : products[index][key] = int(val)
-        elif isinstance(products[index][key], list):
-            val = input(f"Masukkan {key} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
-            if val != "" : products[index][key] = val.split(",")
+        else: print(f"{key}")
+    
+    print("\nTekan enter jika data tidak ingin diubah\n\n")
+    key = input(f"Masukkan nama kolom : ")
+    if key == "sku": pass
+    elif isinstance(products[index][key], str):
+        val = input(f"Masukkan {key} : ")
+        if val != "" : products[index][key] = val
+    elif isinstance(products[index][key], int):
+        val = input(f"Masukkan {key} : ")
+        if val != "" : products[index][key] = int(val)
+    elif isinstance(products[index][key], list):
+        val = input(f"Masukkan {key} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
+        if val != "" : products[index][key] = val.split(",")
 
-    PutProductByIdx(index, products[index])
-    printAllProduct()
+    if val != "":
+        PutProductByIdx(index, products[index])
+        printAllProduct()
+        print("\nData successfully updated\n")
+    app.backToPrevMenu()
 
 def PostProductController():
     product = create_product()
     PostProduct(product)
+    print("\nData successfully saved\n")
     printAllProduct()
+    app.backToPrevMenu()
 
 def PostBuyProductController():
     printAllProduct()

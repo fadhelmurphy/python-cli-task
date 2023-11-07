@@ -15,11 +15,19 @@ def ProductInformationController():
 Product Menu {separator}\n
 Halo, Anda sedang berada di halaman Product
 
+[1] : Menampilkan product
+[2] : Menghapus satu product
+[3] : Mengupdate satu product
+[4] : Menambah satu product
+        """)
+
+def GetProductsInformationController():
+    print(f"""
+GET Products Menu {separator}\n
+Halo, Anda sedang berada di halaman GET Products
+
 [1] : Menampilkan seluruh product
-[2] : Mencari product berdasarkan nama produk atau sku
-[3] : Menghapus satu product
-[4] : Mengupdate satu product
-[5] : Menambah satu product
+[2] : Mencari product berdasarkan sku
         """)
     
 def AboutInformationController():

@@ -7,7 +7,7 @@ def GetProducts():
 def GetProductById(value):
     value = value.lower()
     try:
-        return findItemInListObj(lambda product: (value in product["sku"].lower() or value in product["product_name"].lower()), list_product)
+        return findItemInListObj(lambda product: (value in product["sku"].lower()), list_product)
     except:
         return []
     
@@ -16,10 +16,10 @@ def GetIndexByProductId():
     index = 0
     try:
         while isNotFound:
-            value = input(f"\n\nMasukkan sku yang ingin diubah : ").lower()
+            value = input(f"\n\nMasukkan sku : ").lower()
             selectedProduct = findItemInListObj(lambda product: (value in product[1]["sku"].lower()), enumerate(list_product))
             isNotFound = len(selectedProduct) == 0
-            if isNotFound: print("Sku tidak ditemukan, silakan coba yang lain")
+            if isNotFound: print("The data that you are looking for doesn't exist, Try another sku.")
             else:
                 index = selectedProduct[0][0]
         return index
@@ -69,7 +69,7 @@ def create_product():
                 val = requiredInput(f"Masukkan {item} : ", data_type)
                 isValid = isProductExist(val)
                 if isValid == True:
-                    print("Data yang anda input sudah ada, silakan input yang lain.")
+                    print("Data already exists, try another input.")
             product[item] = val
         elif nullable != True:
             val = requiredInput(f"Masukkan {item} : ", data_type)
@@ -92,6 +92,9 @@ def showlist_product(products, withIndex = False):
         print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())
 
 def showProductDetail(item):
-    print(f"sku\t\t| product name\t\t\t| brand name\t| category\t\t\t| price\t\t| stock ")
+    print(f"\n\nsku\t\t| product name\t\t\t| brand name\t\t| category\t\t\t| price\t\t| stock ".title())
     sku, product_name, brand_name, category, price, stock = item.values()
-    print(f"{sku}\t| {product_name}\t\t\t| {brand_name}\t\t| {' '.join(category)}\t\t\t| {price}\t| {stock} ")
+    productTab = "\t"*2 if len(product_name) >= 14 else "\t"*3
+    brandTab = "\t"*2 if len(brand_name) >= 6 else "\t"*3
+    categoryTab = "\t"*2 if len(category) >= 6 else "\t"*3
+    print(f"{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())
