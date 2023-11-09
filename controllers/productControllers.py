@@ -17,7 +17,9 @@ def GetProductsController():
             products = GetSortedProductsByParams(list_products_kolom[sortedBy], isDescending)
             print("\nHasil sort product :\n\n")
             showlist_product(products)
-    else: print("Data doesn't exist")
+    else: 
+        print("Data doesn't exist")
+        GetProductsController()
     app.backToPrevMenu()
 
 def SearchProductByIdController():
@@ -25,48 +27,56 @@ def SearchProductByIdController():
     sku = input("\nMasukkan sku : ")
     products = GetProductById(sku)
     print("\nHasil mencari product :")
-    if len(products) > 0: showlist_product(products)
+    if len(products) > 0: 
+        showlist_product(products)
+        app.backToPrevMenu()
     else: 
         print("Data doesn't exist, try another sku.\n")
-    app.backToPrevMenu()
+        SearchProductByIdController()
 
 def DeleteProductByIdController():
     printAllProduct()
-    index = GetIndexByProductId()
-    DeleteProductByIdx(index)
-    print("\nData successfully deleted\n")
-    printAllProduct()
-    app.backToPrevMenu()
+    index = GetIndexByProductId(breakIfNotFound=True)
+    if index == -1:
+        DeleteProductByIdController()
+    else:
+        DeleteProductByIdx(index)
+        print("\nData successfully deleted\n")
+        printAllProduct()
+        app.backToPrevMenu()
 
 def PutProductByIdController():
     val = ""
     products = printAllProduct()
-    index = GetIndexByProductId()
-    showProductDetail(products[index])
+    index = GetIndexByProductId(breakIfNotFound=True)
+    if index == -1:
+        PutProductByIdController()
+    else:
+        showProductDetail(products[index])
 
-    print("Nama - nama kolom yang ada : \n")
-    for key in products[index].keys():
-        if key == "sku": continue
-        else: print(f"{key}")
-    
-    print("\nTekan enter jika data tidak ingin diubah\n\n")
-    key = input(f"Masukkan nama kolom : ")
-    if key == "sku": pass
-    elif isinstance(products[index][key], str):
-        val = input(f"Masukkan {key} : ")
-        if val != "" : products[index][key] = val
-    elif isinstance(products[index][key], int):
-        val = input(f"Masukkan {key} : ")
-        if val != "" : products[index][key] = int(val)
-    elif isinstance(products[index][key], list):
-        val = input(f"Masukkan {key} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
-        if val != "" : products[index][key] = val.split(",")
+        print("Nama - nama kolom yang ada : \n")
+        for key in products[index].keys():
+            if key == "sku": continue
+            else: print(f"{key}")
+        
+        print("\nTekan enter jika data tidak ingin diubah\n\n")
+        key = input(f"Masukkan nama kolom : ")
+        if key == "sku": pass
+        elif isinstance(products[index][key], str):
+            val = input(f"Masukkan {key} : ")
+            if val != "" : products[index][key] = val
+        elif isinstance(products[index][key], int):
+            val = input(f"Masukkan {key} : ")
+            if val != "" : products[index][key] = int(val)
+        elif isinstance(products[index][key], list):
+            val = input(f"Masukkan {key} pisahkan dengan , jika lebih dari 1.\ncontoh: fragrance, parfume : ")
+            if val != "" : products[index][key] = val.split(",")
 
-    if val != "":
-        PutProductByIdx(index, products[index])
-        printAllProduct()
-        print("\nData successfully updated\n")
-    app.backToPrevMenu()
+        if val != "":
+            PutProductByIdx(index, products[index])
+            printAllProduct()
+            print("\nData successfully updated\n")
+        app.backToPrevMenu()
 
 def PostProductController():
     product = create_product()
@@ -107,6 +117,6 @@ def PostBuyProductController():
         PostCart(product)
     print("\nKeranjang anda sekarang :")
     printAllCarts()
-    isBeli = input(f"Ingin beli lagi? (y / t) : ").lower()
+    isBeli = input(f"\n\nIngin beli lagi? (y / t) : ").lower()
     if isBeli == "y":
         PostBuyProductController()

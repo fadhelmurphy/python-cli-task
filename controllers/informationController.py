@@ -3,22 +3,15 @@ from helpers import separator
 def MainInformationController():
     print(f"""
 Main Menu {separator}\n
-[1] : Menuju Halaman Product
-[2] : Membeli Product
-[3] : Menampilkan Keranjang
-[4] : Halaman Checkout
-[99] : Menuju Halaman About
-        """)
-
-def ProductInformationController():
-    print(f"""
-Product Menu {separator}\n
-Halo, Anda sedang berada di halaman Product
-
 [1] : Menampilkan product
-[2] : Menghapus satu product
+[2] : Menambah satu product
 [3] : Mengupdate satu product
-[4] : Menambah satu product
+[4] : Menghapus satu product
+
+[5] : Membeli Product
+[6] : Menampilkan Keranjang
+[7] : Halaman Checkout
+[99] : Menuju Halaman About
         """)
 
 def GetProductsInformationController():
