@@ -1,5 +1,6 @@
-from services.cartServices import printAllCarts, PostCartsCheckout, DeleteCartByIdx, PutCartByIdx
+from services.cartServices import printAllCarts, PostCartsCheckout, DeleteCartByIdx, PutCartByIdx, GetCartsTotalPrice
 from services.productServices import printAllProduct, GetProductById
+from helpers import toRupiah
 import app
 
 def GetCartsController():
@@ -32,9 +33,11 @@ def PostCartsCheckoutController():
     print("""
 Checkout page""")
     printAllCarts()
+    total_price = GetCartsTotalPrice()
+    print(f"\nTotal Belanja {toRupiah(total_price)} \n")
     isCheckout = input(f"Ingin melanjutkan transaksi? (y / t) : ").lower()
     if isCheckout == "y":
-        PostCartsCheckout()
+        PostCartsCheckout(total_price)
         printAllProduct()
     
 

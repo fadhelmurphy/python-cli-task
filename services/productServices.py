@@ -89,15 +89,17 @@ def showlist_product(products, withIndex = False):
     for idx, item in enumerate(products):
         index = f"{idx}\t\t| " if withIndex else ""
         sku, product_name, brand_name, category, price, stock = item.values()
-        productTab = "\t"*2 if len(product_name) >= 14 else "\t"*3
+        productTab = "\t"*3 if len(product_name) < 14 else "\t"*2 if len(product_name) < 24 else "\t"*1
         brandTab = "\t"*2 if len(brand_name) >= 6 else "\t"*3
-        categoryTab = "\t"*2 if len(category) >= 6 else "\t"*3
-        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())
+        strCat = ','.join(category)
+        categoryTab = "\t"*3 if len(strCat) < 14 else "\t"*2 if len(strCat) < 24 else "\t"*1
+        print(f"{index}{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {strCat}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())
 
 def showProductDetail(item):
     print(f"\n\nsku\t\t| product name\t\t\t| brand name\t\t| category\t\t\t| price\t\t| stock ".title())
     sku, product_name, brand_name, category, price, stock = item.values()
-    productTab = "\t"*2 if len(product_name) >= 14 else "\t"*3
+    productTab = "\t"*3 if len(product_name) < 14 else "\t"*2 if len(product_name) < 24 else "\t"*1
     brandTab = "\t"*2 if len(brand_name) >= 6 else "\t"*3
-    categoryTab = "\t"*2 if len(category) >= 6 else "\t"*3
-    print(f"{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {' '.join(category)}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())
+    strCat = ','.join(category)
+    categoryTab = "\t"*3 if len(strCat) < 14 else "\t"*2 if len(strCat) < 24 else "\t"*1
+    print(f"{sku}\t| {product_name}{productTab}| {brand_name}{brandTab}| {strCat}{categoryTab}| {toRupiah(price)}\t| {stock} ".title())

@@ -88,6 +88,8 @@ def PostProductController():
 def PostBuyProductController():
     printAllProduct()
     isNotFound = True
+    isBeli = input(f"\n\nIngin melanjutkan pembelian? (y / t) : ").lower()
+    if isBeli == "t": app.backToMainMenu()
     while isNotFound:
         sku = input(f"Masukkan sku yang ingin dibeli : ")
         products = GetProductById(sku)
@@ -120,3 +122,4 @@ def PostBuyProductController():
     isBeli = input(f"\n\nIngin beli lagi? (y / t) : ").lower()
     if isBeli == "y":
         PostBuyProductController()
+    else: app.backToMainMenu()

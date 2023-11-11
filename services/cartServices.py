@@ -38,15 +38,34 @@ def DeleteCartByIdx(index):
 def changeCartQty(val, condVal):
     return changeItemInListObj(lambda item: changeItemByCond(item, "stock", val, item["sku"].lower() == condVal.lower() and item["stock"] >= val), list_cart)
 
-def PostCartsCheckout():
+def PostCartsCheckout(total_price):
     global list_product
     carts = GetCarts()
+    while True:
+        jumlahUang = int(input("Masukkan jumlah Uang :") or 0)
+        calc = jumlahUang - total_price
+        if jumlahUang < total_price:
+            print(
+                f"Transaksi anda dibatalkan\nuangnya kurang sebesar {calc*-1}")
+        elif jumlahUang == total_price:
+            print("Terima kasih")
+            break
+        else:
+            print(
+                f"Terima kasih \n\nuang kembali anda : {calc}")
+            break
     for item in carts:
         sku, product_name, _, _, _, stock = item.values()
         products = GetProductById(sku).copy()[0].copy()
         if products["stock"] >= stock:
             list_product = changeProductQty(val=stock, condVal=sku)
         else: print(f"Jumlah {product_name} melebihi stok yang ada di toko.")
+
+def GetCartsTotalPrice():
+    carts = GetCarts()
+    total_price = sum(item["price"] for item in carts)
+    return total_price
+
 
 def printAllCarts(withIndex=False):
     carts = GetCarts()
